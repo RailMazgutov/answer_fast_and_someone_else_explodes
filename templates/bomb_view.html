@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,6 +124,10 @@
 </head>
 <body>
 
+<audio>
+  <source id="bomb_audio" src="{% static 'bomb.mp3' %}" type="audio/mpeg">
+</audio>
+
 <div class="clock">
 
     <div class="digit seconds">
@@ -219,6 +224,18 @@
             </table>
         </td>
     </tr>
+    <tr>
+        <td>
+            <table border=1 cellpadding=4 cellspacing="0" bordercolor="#ff0000"
+                   style="cursor: pointer;width: 100%">
+                <tr>
+                    <td style="color: white;text-align:center;font-family: 'Quicksand', sans-serif;">
+                        PLAY SOUND <input id="play_sound" type="checkbox" checked="checked" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
 </table>
 
 <script>
@@ -236,21 +253,29 @@
         [1, 2, 7, 3, 6]
     ];
 
+    let sound = new Audio('{% static 'bomb.mp3' %}')
+    let sound_started = false;
+
     let seconds_digits;
     let milliseconds_digits;
     let interval;
 
     let period_setting = document.getElementById("timer_period");
+    let play_sound = document.getElementById("play_sound");
 
     function setTime(time) {
         let seconds = Math.floor(time / 1000);
         setNumber(seconds_digits[0], Math.floor(seconds / 10), 1);
         setNumber(seconds_digits[1], seconds % 10, 1);
 
+        if(play_sound.checked && !sound_started && time < 1000 && time > 0) {
+            sound.play()
+            sound_started = true;
+        }
+
         let milliseconds = time % 1000;
-        console.log(milliseconds)
+
         if (milliseconds == 0) {
-            console.log('FINISH')
             setNumber(milliseconds_digits[0], 0, 1);
             setNumber(milliseconds_digits[1], 0, 1);
             setNumber(milliseconds_digits[2], 0, 1);
@@ -267,7 +292,14 @@
         clearInterval(interval);
     }
 
+    function StopSound() {
+        sound_started = false;
+        sound.pause();
+        sound.currentTime = 0;
+    }
+
     function Stop() {
+        StopSound();
         setTime(getTimerPeriod());
         onTimesUp();
     }
@@ -280,6 +312,7 @@
         onTimesUp();
         let start_ms = new Date().getTime();
         let period_ms = getTimerPeriod();
+        StopSound();
         setTime(period_ms);
 
         interval = setInterval(function () {
@@ -298,6 +331,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         seconds_digits = document.querySelectorAll('.seconds');
         milliseconds_digits = document.querySelectorAll('.milliseconds');
+        StopSound();
         setTime(0);
     });
 
@@ -305,25 +339,16 @@
         let segments = digit.querySelectorAll('.segment');
         let current = parseInt(digit.getAttribute('data-value'));
 
-        // only switch if number has changed or wasn't set
         if (!isNaN(current) && current != number) {
-            // unset previous number
             digitSegments[current].forEach(function (digitSegment, index) {
-                //setTimeout(function () {
                 segments[digitSegment - 1].classList.remove('on');
-                //}, 1)
             });
         }
 
         if (isNaN(current) || current != number) {
-            // set new number after
-            //setTimeout(function () {
             digitSegments[number].forEach(function (digitSegment, index) {
-                //setTimeout(function () {
                 segments[digitSegment - 1].classList.add('on');
-                //}, 0)
             });
-            //}, 250);
             digit.setAttribute('data-value', number);
         }
     }
