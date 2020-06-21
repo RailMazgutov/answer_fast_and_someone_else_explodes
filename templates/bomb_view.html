@@ -5,127 +5,12 @@
     <meta charset="UTF-8">
     <title>Speak Fast And Someone Else Will Explode</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            background: #000;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            min-width: 900px;
-        }
-
-        .clock {
-            height: 200px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 900px;
-            margin-left: -450px;
-            margin-top: -100px;
-            text-align: center;
-        }
-
-        .digit {
-            width: 120px;
-            height: 200px;
-            margin: 0 5px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .digit .segment {
-            background: #c00;
-            border-radius: 5px;
-            position: absolute;
-            opacity: 0.15;
-            transition: opacity 0.2s;
-            -webkit-transition: opacity 0.2s;
-            -ms-transition: opacity 0.2s;
-            -moz-transition: opacity 0.2s;
-            -o-transition: opacity 0.2s;
-        }
-
-        .digit .segment.on, .separator {
-            opacity: 1;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
-            transition: opacity 0s;
-            -webkit-transition: opacity 0s;
-            -ms-transition: opacity 0s;
-            -moz-transition: opacity 0s;
-            -o-transition: opacity 0s;
-        }
-
-        .separator {
-            width: 20px;
-            height: 20px;
-            background: #c00;
-            border-radius: 50%;
-            display: inline-block;
-            position: relative;
-            top: -90px;
-        }
-
-        .digit .segment:nth-child(1) {
-            top: 10px;
-            left: 20px;
-            right: 20px;
-            height: 10px;
-        }
-
-        .digit .segment:nth-child(2) {
-            top: 20px;
-            right: 10px;
-            width: 10px;
-            height: 75px;
-            height: calc(50% - 25px);
-        }
-
-        .digit .segment:nth-child(3) {
-            bottom: 20px;
-            right: 10px;
-            width: 10px;
-            height: 75px;
-            height: calc(50% - 25px);
-        }
-
-        .digit .segment:nth-child(4) {
-            bottom: 10px;
-            right: 20px;
-            height: 10px;
-            left: 20px;
-        }
-
-        .digit .segment:nth-child(5) {
-            bottom: 20px;
-            left: 10px;
-            width: 10px;
-            height: 75px;
-            height: calc(50% - 25px);
-        }
-
-        .digit .segment:nth-child(6) {
-            top: 20px;
-            left: 10px;
-            width: 10px;
-            height: 75px;
-            height: calc(50% - 25px);
-        }
-
-        .digit .segment:nth-child(7) {
-            bottom: 95px;
-            bottom: calc(50% - 5px);
-            right: 20px;
-            left: 20px;
-            height: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
 
 <audio>
-  <source id="bomb_audio" src="{% static 'bomb.mp3' %}" type="audio/mpeg">
+    <source id="bomb_audio" src="{% static 'bomb.mp3' %}" type="audio/mpeg">
 </audio>
 
 <div class="clock">
@@ -182,16 +67,15 @@
         <div class="segment"></div>
     </div>
 </div>
-<table style="position:absolute; right:20px; top:20px; ">
+<table id="settings_table" style=" ">
     <tr>
         <td>
-            <table border=1 cellpadding=4 cellspacing="0" bordercolor="#ff0000" onclick="Stop()"
-                   style="cursor: pointer;width: 100%">
+            <table class="setting" onclick="Stop()">
                 <tr>
-                    <td style="color: white;text-align:center;font-family: 'Quicksand', sans-serif;">
-                        Timer Period: <input
+                    <td class="setting_text">
+                        TIMER PERIOD: <input
                             id="timer_period" type="number" min="0"
-                            style="color: white;font-family: 'Quicksand', sans-serif;background-color:black;font-size:10pt;border:0;padding-left:5px"
+                            class="setting_text setting_input"
                             value="5000">
                     </td>
                 </tr>
@@ -201,10 +85,60 @@
     </tr>
     <tr>
         <td>
-            <table border=1 cellpadding=4 cellspacing="0" bordercolor="#ff0000" onclick="Stop()"
-                   style="cursor: pointer;width: 100%">
+            <table class="setting">
                 <tr>
-                    <td style="color: white;text-align:center;font-family: 'Quicksand', sans-serif;">
+                    <td class="setting_text">
+                        PLAY SOUND <input id="play_sound" type="checkbox" checked="checked"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="setting">
+                <tr>
+                    <td class="setting_text">
+                        ROUNDS ENABLED <input id="rounds_enabled" type="checkbox"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="setting">
+                <tr>
+                    <td class="setting_text">
+                        PLAYERS COUNT: <input
+                            id="players_count" type="number" min="0"
+                            class="setting_text setting_input" value="8">
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="setting">
+                <tr>
+                    <td class="setting_text">
+                        PERIOD DECREASE: <input
+                            id="period_decrease" type="number" min="0"
+                            class="setting_text setting_input"
+                            value="250">
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="setting" onclick="Stop()">
+                <tr>
+                    <td class="setting_text">
                         STOP TIMER
                     </td>
                 </tr>
@@ -214,23 +148,10 @@
     </tr>
     <tr>
         <td>
-            <table border=1 cellpadding=4 cellspacing="0" bordercolor="#ff0000" onclick="bombTimer()"
-                   style="cursor: pointer;width: 100%">
+            <table class="setting" onclick="Start()">
                 <tr>
-                    <td style="color: white;text-align:center;font-family: 'Quicksand', sans-serif;">
+                    <td class="setting_text">
                         START TIMER
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <table border=1 cellpadding=4 cellspacing="0" bordercolor="#ff0000"
-                   style="cursor: pointer;width: 100%">
-                <tr>
-                    <td style="color: white;text-align:center;font-family: 'Quicksand', sans-serif;">
-                        PLAY SOUND <input id="play_sound" type="checkbox" checked="checked" />
                     </td>
                 </tr>
             </table>
@@ -263,32 +184,33 @@
     let period_setting = document.getElementById("timer_period");
     let play_sound = document.getElementById("play_sound");
 
-    function setTime(time) {
-        let seconds = Math.floor(time / 1000);
-        setNumber(seconds_digits[0], Math.floor(seconds / 10), 1);
-        setNumber(seconds_digits[1], seconds % 10, 1);
+    let rounds_enabled = document.getElementById("rounds_enabled");
+    let players_count = document.getElementById("players_count");
+    let period_decrease = document.getElementById("period_decrease");
 
-        if(play_sound.checked && !sound_started && time < 1000 && time > 0) {
+    let current_player_number = 0;
+
+    function ProcessTime(time) {
+        if (play_sound.checked && !sound_started && time < 1000 && time > 0) {
             sound.play()
             sound_started = true;
         }
-
-        let milliseconds = time % 1000;
-
-        if (milliseconds == 0) {
-            setNumber(milliseconds_digits[0], 0, 1);
-            setNumber(milliseconds_digits[1], 0, 1);
-            setNumber(milliseconds_digits[2], 0, 1);
-            return;
-        }
-
-        setNumber(milliseconds_digits[0], Math.floor(milliseconds / 100), 1);
-        milliseconds = milliseconds % 100;
-        setNumber(milliseconds_digits[1], Math.floor(milliseconds / 10), 1);
-        setNumber(milliseconds_digits[2], milliseconds % 10, 1);
+        SetTime(time);
     }
 
-    function onTimesUp() {
+    function SetTime(time) {
+        let seconds = Math.floor(time / 1000);
+        SetNumber(seconds_digits[0], Math.floor(seconds / 10), 1);
+        SetNumber(seconds_digits[1], seconds % 10, 1);
+
+        let milliseconds = time % 1000;
+        SetNumber(milliseconds_digits[0], Math.floor(milliseconds / 100), 1);
+        milliseconds = milliseconds % 100;
+        SetNumber(milliseconds_digits[1], Math.floor(milliseconds / 10), 1);
+        SetNumber(milliseconds_digits[2], milliseconds % 10, 1);
+    }
+
+    function OnTimesUp() {
         clearInterval(interval);
     }
 
@@ -300,31 +222,42 @@
 
     function Stop() {
         StopSound();
-        setTime(getTimerPeriod());
-        onTimesUp();
+        SetTime(getTimerPeriod());
+        OnTimesUp();
     }
 
     function getTimerPeriod() {
         return 0 + period_setting.value;
     }
 
-    function bombTimer() {
-        onTimesUp();
+    function NextStarted() {
+        if (!rounds_enabled.checked) return;
+        if (current_player_number == (0 + players_count.value)) {
+            period_setting.value = period_setting.value - period_decrease.value;
+            current_player_number = 0;
+        }
+        current_player_number++;
+    }
+
+    function Start() {
+        OnTimesUp();
         let start_ms = new Date().getTime();
+        NextStarted();
         let period_ms = getTimerPeriod();
         StopSound();
-        setTime(period_ms);
+        ProcessTime(period_ms);
 
         interval = setInterval(function () {
             let current_ms = new Date().getTime();
             let already_spent = (current_ms - start_ms);
 
             if (already_spent > period_ms) {
-                setTime(0);
-                onTimesUp();
-                return;
+                SetTime(0);
+                OnTimesUp();
+                if (!rounds_enabled.checked) return;
+                players_count.value = players_count.value - 1
             }
-            setTime(period_ms - already_spent)
+            ProcessTime(period_ms - already_spent)
         }, 234)
     }
 
@@ -332,10 +265,10 @@
         seconds_digits = document.querySelectorAll('.seconds');
         milliseconds_digits = document.querySelectorAll('.milliseconds');
         StopSound();
-        setTime(0);
+        SetTime(0);
     });
 
-    function setNumber(digit, number, on) {
+    function SetNumber(digit, number, on) {
         let segments = digit.querySelectorAll('.segment');
         let current = parseInt(digit.getAttribute('data-value'));
 
